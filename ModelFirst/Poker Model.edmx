@@ -1,0 +1,579 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PokerDataBase.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="PokerDataBaseStoreContainer">
+    <EntitySet Name="Players" EntityType="PokerDataBase.Store.Players" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Hands" EntityType="PokerDataBase.Store.Hands" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Tables" EntityType="PokerDataBase.Store.Tables" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HandActions" EntityType="PokerDataBase.Store.HandActions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Plays" EntityType="PokerDataBase.Store.Plays" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Furthers1" EntityType="PokerDataBase.Store.Furthers1" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PlayedOns" EntityType="PokerDataBase.Store.PlayedOns" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Performs" EntityType="PokerDataBase.Store.Performs" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="HandActionPerforms" Association="PokerDataBase.Store.HandActionPerforms">
+      <End Role="HandAction" EntitySet="HandActions" />
+      <End Role="Performs" EntitySet="Performs" />
+    </AssociationSet>
+    <AssociationSet Name="PerformsPlayer" Association="PokerDataBase.Store.PerformsPlayer">
+      <End Role="Performs" EntitySet="Performs" />
+      <End Role="Player" EntitySet="Players" />
+    </AssociationSet>
+    <AssociationSet Name="PlayerPlays" Association="PokerDataBase.Store.PlayerPlays">
+      <End Role="Player" EntitySet="Players" />
+      <End Role="Plays" EntitySet="Plays" />
+    </AssociationSet>
+    <AssociationSet Name="HandPlays" Association="PokerDataBase.Store.HandPlays">
+      <End Role="Hand" EntitySet="Hands" />
+      <End Role="Plays" EntitySet="Plays" />
+    </AssociationSet>
+    <AssociationSet Name="HandActionFurthers" Association="PokerDataBase.Store.HandActionFurthers">
+      <End Role="HandAction" EntitySet="HandActions" />
+      <End Role="Furthers" EntitySet="Furthers1" />
+    </AssociationSet>
+    <AssociationSet Name="FurthersHand" Association="PokerDataBase.Store.FurthersHand">
+      <End Role="Furthers" EntitySet="Furthers1" />
+      <End Role="Hand" EntitySet="Hands" />
+    </AssociationSet>
+    <AssociationSet Name="PlayedOnHand" Association="PokerDataBase.Store.PlayedOnHand">
+      <End Role="PlayedOn" EntitySet="PlayedOns" />
+      <End Role="Hand" EntitySet="Hands" />
+    </AssociationSet>
+    <AssociationSet Name="PlayedOnTable" Association="PokerDataBase.Store.PlayedOnTable">
+      <End Role="PlayedOn" EntitySet="PlayedOns" />
+      <End Role="Table" EntitySet="Tables" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Players">
+    <Key>
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="Winnings" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Hands">
+    <Key>
+      <PropertyRef Name="HandId" />
+    </Key>
+    <Property Name="HandId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PotSize" Type="decimal" Nullable="false" />
+    <Property Name="ButtonPosition" Type="int" Nullable="false" />
+    <Property Name="Time" Type="datetime" Nullable="false" />
+    <Property Name="NumberOfPlayers" Type="int" Nullable="false" />
+    <Property Name="RiverCard" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="TurnCard" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FlopCard3" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FlopCard2" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FlopCard1" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Tables">
+    <Key>
+      <PropertyRef Name="TableID" />
+    </Key>
+    <Property Name="TableID" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="MaxPlayers" Type="smallint" Nullable="false" />
+    <Property Name="Stakes" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Limit" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Site" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HandActions">
+    <Key>
+      <PropertyRef Name="ActionID" />
+    </Key>
+    <Property Name="ActionID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ActionName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Street" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Amount" Type="bigint" Nullable="false" />
+    <Property Name="IsPFR" Type="varbinary(max)" Nullable="false" />
+    <Property Name="IsVPIP" Type="varbinary(max)" Nullable="false" />
+    <Property Name="HandHandId" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Plays">
+    <Key>
+      <PropertyRef Name="HandId" />
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="HoleCard1" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="HoleCard2" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="StartingStack" Type="decimal" Nullable="false" />
+    <Property Name="EndingStack" Type="decimal" Nullable="false" />
+    <Property Name="SeatPosition" Type="int" Nullable="false" />
+    <Property Name="HandId" Type="bigint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Furthers1">
+    <Key>
+      <PropertyRef Name="HandId" />
+      <PropertyRef Name="ActionID" />
+    </Key>
+    <Property Name="HandId" Type="bigint" Nullable="false" />
+    <Property Name="ActionID" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PlayedOns">
+    <Key>
+      <PropertyRef Name="HandId" />
+      <PropertyRef Name="TableID" />
+    </Key>
+    <Property Name="HandId" Type="bigint" Nullable="false" />
+    <Property Name="TableID" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Performs">
+    <Key>
+      <PropertyRef Name="ActionID" />
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="ActionID" Type="bigint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <Association Name="HandActionPerforms">
+    <End Role="HandAction" Type="PokerDataBase.Store.HandActions" Multiplicity="1" />
+    <End Role="Performs" Type="PokerDataBase.Store.Performs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HandAction">
+        <PropertyRef Name="ActionID" />
+      </Principal>
+      <Dependent Role="Performs">
+        <PropertyRef Name="ActionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PerformsPlayer">
+    <End Role="Performs" Type="PokerDataBase.Store.Performs" Multiplicity="*" />
+    <End Role="Player" Type="PokerDataBase.Store.Players" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Player">
+        <PropertyRef Name="Name" />
+      </Principal>
+      <Dependent Role="Performs">
+        <PropertyRef Name="Name" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PlayerPlays">
+    <End Role="Player" Type="PokerDataBase.Store.Players" Multiplicity="1" />
+    <End Role="Plays" Type="PokerDataBase.Store.Plays" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Player">
+        <PropertyRef Name="Name" />
+      </Principal>
+      <Dependent Role="Plays">
+        <PropertyRef Name="Name" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="HandPlays">
+    <End Role="Hand" Type="PokerDataBase.Store.Hands" Multiplicity="1" />
+    <End Role="Plays" Type="PokerDataBase.Store.Plays" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Hand">
+        <PropertyRef Name="HandId" />
+      </Principal>
+      <Dependent Role="Plays">
+        <PropertyRef Name="HandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="HandActionFurthers">
+    <End Role="HandAction" Type="PokerDataBase.Store.HandActions" Multiplicity="1" />
+    <End Role="Furthers" Type="PokerDataBase.Store.Furthers1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HandAction">
+        <PropertyRef Name="ActionID" />
+      </Principal>
+      <Dependent Role="Furthers">
+        <PropertyRef Name="ActionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FurthersHand">
+    <End Role="Furthers" Type="PokerDataBase.Store.Furthers1" Multiplicity="*" />
+    <End Role="Hand" Type="PokerDataBase.Store.Hands" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Hand">
+        <PropertyRef Name="HandId" />
+      </Principal>
+      <Dependent Role="Furthers">
+        <PropertyRef Name="HandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PlayedOnHand">
+    <End Role="PlayedOn" Type="PokerDataBase.Store.PlayedOns" Multiplicity="*" />
+    <End Role="Hand" Type="PokerDataBase.Store.Hands" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Hand">
+        <PropertyRef Name="HandId" />
+      </Principal>
+      <Dependent Role="PlayedOn">
+        <PropertyRef Name="HandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PlayedOnTable">
+    <End Role="PlayedOn" Type="PokerDataBase.Store.PlayedOns" Multiplicity="*" />
+    <End Role="Table" Type="PokerDataBase.Store.Tables" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Table">
+        <PropertyRef Name="TableID" />
+      </Principal>
+      <Dependent Role="PlayedOn">
+        <PropertyRef Name="TableID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="PokerDataBase" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Poker_x0020_ModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Players" EntityType="PokerDataBase.Player" />
+          <EntitySet Name="Hands" EntityType="PokerDataBase.Hand" />
+          <EntitySet Name="Tables" EntityType="PokerDataBase.Table" />
+          <EntitySet Name="HandActions" EntityType="PokerDataBase.HandAction" />
+          <EntitySet Name="Plays" EntityType="PokerDataBase.Plays" />
+          <EntitySet Name="Furthers1" EntityType="PokerDataBase.Furthers" />
+          <EntitySet Name="PlayedOns" EntityType="PokerDataBase.PlayedOn" />
+          <EntitySet Name="Performs" EntityType="PokerDataBase.Performs" />
+          <AssociationSet Name="HandActionPerforms" Association="PokerDataBase.HandActionPerforms">
+            <End Role="HandAction" EntitySet="HandActions" />
+            <End Role="Performs" EntitySet="Performs" />
+          </AssociationSet>
+          <AssociationSet Name="PerformsPlayer" Association="PokerDataBase.PerformsPlayer">
+            <End Role="Performs" EntitySet="Performs" />
+            <End Role="Player" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="PlayerPlays" Association="PokerDataBase.PlayerPlays">
+            <End EntitySet="Players" Role="Player" />
+            <End EntitySet="Plays" Role="Plays" />
+          </AssociationSet>
+          <AssociationSet Name="HandPlays" Association="PokerDataBase.HandPlays">
+            <End Role="Hand" EntitySet="Hands" />
+            <End Role="Plays" EntitySet="Plays" />
+          </AssociationSet>
+          <AssociationSet Name="HandActionFurthers" Association="PokerDataBase.HandActionFurthers">
+            <End EntitySet="HandActions" Role="HandAction" />
+            <End EntitySet="Furthers1" Role="Furthers" />
+          </AssociationSet>
+          <AssociationSet Name="FurthersHand" Association="PokerDataBase.FurthersHand">
+            <End EntitySet="Furthers1" Role="Furthers" />
+            <End EntitySet="Hands" Role="Hand" />
+          </AssociationSet>
+          <AssociationSet Name="PlayedOnHand" Association="PokerDataBase.PlayedOnHand">
+            <End Role="PlayedOn" EntitySet="PlayedOns" />
+            <End Role="Hand" EntitySet="Hands" />
+          </AssociationSet>
+          <AssociationSet Name="PlayedOnTable" Association="PokerDataBase.PlayedOnTable">
+            <End Role="PlayedOn" EntitySet="PlayedOns" />
+            <End Role="Table" EntitySet="Tables" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Winnings" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="Performs" Relationship="PokerDataBase.PerformsPlayer" FromRole="Player" ToRole="Performs" />
+          <NavigationProperty Name="Plays" Relationship="PokerDataBase.PlayerPlays" FromRole="Player" ToRole="Plays" />
+        </EntityType>
+        <EntityType Name="Hand">
+          <Key>
+            <PropertyRef Name="HandId" />
+          </Key>
+          <Property Name="HandId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PotSize" Type="Decimal" Nullable="false" />
+          <Property Name="ButtonPosition" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" />
+          <Property Name="NumberOfPlayers" Type="Int32" Nullable="false" />
+          <Property Name="RiverCard" Type="String" Nullable="true" />
+          <Property Name="TurnCard" Type="String" Nullable="true" />
+          <Property Name="FlopCard3" Type="String" Nullable="true" />
+          <Property Name="FlopCard2" Type="String" Nullable="true" />
+          <Property Name="FlopCard1" Type="String" Nullable="true" />
+          <NavigationProperty Name="Plays" Relationship="PokerDataBase.HandPlays" FromRole="Hand" ToRole="Plays" />
+          <NavigationProperty Name="Further" Relationship="PokerDataBase.FurthersHand" FromRole="Hand" ToRole="Furthers" />
+          <NavigationProperty Name="PlayedOn" Relationship="PokerDataBase.PlayedOnHand" FromRole="Hand" ToRole="PlayedOn" />
+        </EntityType>
+        <EntityType Name="Table">
+          <Key>
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="TableID" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="100" />
+          <Property Name="MaxPlayers" Type="Int32" Nullable="false" />
+          <Property Name="Stakes" Type="String" Nullable="false" />
+          <Property Name="Limit" Type="String" Nullable="false" />
+          <Property Name="Site" Type="String" Nullable="false" />
+          <NavigationProperty Name="PlayedOn" Relationship="PokerDataBase.PlayedOnTable" FromRole="Table" ToRole="PlayedOn" />
+        </EntityType>
+        <EntityType Name="HandAction">
+          <Key>
+            <PropertyRef Name="ActionID" />
+          </Key>
+          <Property Name="ActionID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActionName" Type="String" Nullable="false" />
+          <Property Name="Street" Type="String" Nullable="false" />
+          <Property Name="Amount" Type="Int64" Nullable="false" />
+          <Property Name="IsPFR" Type="Binary" Nullable="false" />
+          <Property Name="IsVPIP" Type="Binary" Nullable="false" />
+          <Property Name="HandHandId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Furthers" Relationship="PokerDataBase.HandActionFurthers" FromRole="HandAction" ToRole="Furthers" />
+          <NavigationProperty Name="Performs" Relationship="PokerDataBase.HandActionPerforms" FromRole="HandAction" ToRole="Performs" />
+        </EntityType>
+        <EntityType Name="Plays">
+          <Key>
+            <PropertyRef Name="HandId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="HoleCard1" Type="String" Nullable="false" />
+          <Property Name="HoleCard2" Type="String" Nullable="false" />
+          <Property Name="StartingStack" Type="Decimal" Nullable="false" />
+          <Property Name="EndingStack" Type="Decimal" Nullable="false" />
+          <Property Name="SeatPosition" Type="Int32" Nullable="false" />
+          <Property Name="HandId" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="Player" Relationship="PokerDataBase.PlayerPlays" FromRole="Plays" ToRole="Player" />
+          <NavigationProperty Name="Hand" Relationship="PokerDataBase.HandPlays" FromRole="Plays" ToRole="Hand" />
+        </EntityType>
+        <EntityType Name="Furthers">
+          <Key>
+            <PropertyRef Name="HandId" />
+            <PropertyRef Name="ActionID" />
+          </Key>
+          <Property Name="HandId" Nullable="false" Type="Int64" />
+          <Property Name="ActionID" Nullable="false" Type="Int64" />
+          <NavigationProperty Name="Hand" Relationship="PokerDataBase.FurthersHand" FromRole="Furthers" ToRole="Hand" />
+          <NavigationProperty Name="HandAction" Relationship="PokerDataBase.HandActionFurthers" FromRole="Furthers" ToRole="HandAction" />
+        </EntityType>
+        <EntityType Name="PlayedOn">
+          <Key>
+            <PropertyRef Name="HandId" />
+            <PropertyRef Name="TableID" />
+          </Key>
+          <Property Name="HandId" Type="Int64" Nullable="false" />
+          <Property Name="TableID" Type="String" Nullable="false" MaxLength="100" />
+          <NavigationProperty Name="Table" Relationship="PokerDataBase.PlayedOnTable" FromRole="PlayedOn" ToRole="Table" />
+          <NavigationProperty Name="Hand" Relationship="PokerDataBase.PlayedOnHand" FromRole="PlayedOn" ToRole="Hand" />
+        </EntityType>
+        <EntityType Name="Performs">
+          <Key>
+            <PropertyRef Name="ActionID" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ActionID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="Player" Relationship="PokerDataBase.PerformsPlayer" FromRole="Performs" ToRole="Player" />
+          <NavigationProperty Name="HandAction" Relationship="PokerDataBase.HandActionPerforms" FromRole="Performs" ToRole="HandAction" />
+        </EntityType>
+        <Association Name="HandActionPerforms">
+          <End Type="PokerDataBase.HandAction" Role="HandAction" Multiplicity="1" />
+          <End Type="PokerDataBase.Performs" Role="Performs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HandAction">
+              <PropertyRef Name="ActionID" />
+            </Principal>
+            <Dependent Role="Performs">
+              <PropertyRef Name="ActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PerformsPlayer">
+          <End Type="PokerDataBase.Performs" Role="Performs" Multiplicity="*" />
+          <End Type="PokerDataBase.Player" Role="Player" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Performs">
+              <PropertyRef Name="Name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlayerPlays">
+          <End Type="PokerDataBase.Player" Multiplicity="1" Role="Player" />
+          <End Type="PokerDataBase.Plays" Multiplicity="*" Role="Plays" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Plays">
+              <PropertyRef Name="Name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HandPlays">
+          <End Type="PokerDataBase.Hand" Role="Hand" Multiplicity="1" />
+          <End Type="PokerDataBase.Plays" Role="Plays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hand">
+              <PropertyRef Name="HandId" />
+            </Principal>
+            <Dependent Role="Plays">
+              <PropertyRef Name="HandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HandActionFurthers">
+          <End Type="PokerDataBase.HandAction" Multiplicity="1" Role="HandAction" />
+          <End Type="PokerDataBase.Furthers" Multiplicity="*" Role="Furthers" />
+          <ReferentialConstraint>
+            <Principal Role="HandAction">
+              <PropertyRef Name="ActionID" />
+            </Principal>
+            <Dependent Role="Furthers">
+              <PropertyRef Name="ActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FurthersHand">
+          <End Type="PokerDataBase.Furthers" Multiplicity="*" Role="Furthers" />
+          <End Type="PokerDataBase.Hand" Multiplicity="1" Role="Hand" />
+          <ReferentialConstraint>
+            <Principal Role="Hand">
+              <PropertyRef Name="HandId" />
+            </Principal>
+            <Dependent Role="Furthers">
+              <PropertyRef Name="HandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlayedOnHand">
+          <End Type="PokerDataBase.PlayedOn" Role="PlayedOn" Multiplicity="*" />
+          <End Type="PokerDataBase.Hand" Role="Hand" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Hand">
+              <PropertyRef Name="HandId" />
+            </Principal>
+            <Dependent Role="PlayedOn">
+              <PropertyRef Name="HandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlayedOnTable">
+          <End Type="PokerDataBase.PlayedOn" Role="PlayedOn" Multiplicity="*" />
+          <End Type="PokerDataBase.Table" Role="Table" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Table">
+              <PropertyRef Name="TableID" />
+            </Principal>
+            <Dependent Role="PlayedOn">
+              <PropertyRef Name="TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PokerDataBaseStoreContainer" CdmEntityContainer="Poker_x0020_ModelContainer">
+    <EntitySetMapping Name="Players">
+      <EntityTypeMapping TypeName="IsTypeOf(PokerDataBase.Player)">
+        <MappingFragment StoreEntitySet="Players">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Winnings" ColumnName="Winnings" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Hands">
+      <EntityTypeMapping TypeName="IsTypeOf(PokerDataBase.Hand)">
+        <MappingFragment StoreEntitySet="Hands">
+          <ScalarProperty Name="HandId" ColumnName="HandId" />
+          <ScalarProperty Name="PotSize" ColumnName="PotSize" />
+          <ScalarProperty Name="ButtonPosition" ColumnName="ButtonPosition" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="NumberOfPlayers" ColumnName="NumberOfPlayers" />
+          <ScalarProperty Name="RiverCard" ColumnName="RiverCard" />
+          <ScalarProperty Name="TurnCard" ColumnName="TurnCard" />
+          <ScalarProperty Name="FlopCard3" ColumnName="FlopCard3" />
+          <ScalarProperty Name="FlopCard2" ColumnName="FlopCard2" />
+          <ScalarProperty Name="FlopCard1" ColumnName="FlopCard1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tables">
+      <EntityTypeMapping TypeName="IsTypeOf(PokerDataBase.Table)">
+        <MappingFragment StoreEntitySet="Tables">
+          <ScalarProperty Name="TableID" ColumnName="TableID" />
+          <ScalarProperty Name="MaxPlayers" ColumnName="MaxPlayers" />
+          <ScalarProperty Name="Stakes" ColumnName="Stakes" />
+          <ScalarProperty Name="Limit" ColumnName="Limit" />
+          <ScalarProperty Name="Site" ColumnName="Site" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HandActions">
+      <EntityTypeMapping TypeName="IsTypeOf(PokerDataBase.HandAction)">
+        <MappingFragment StoreEntitySet="HandActions">
+          <ScalarProperty Name="ActionID" ColumnName="ActionID" />
+          <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="IsPFR" ColumnName="IsPFR" />
+          <ScalarProperty Name="IsVPIP" ColumnName="IsVPIP" />
+          <ScalarProperty Name="HandHandId" ColumnName="HandHandId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Plays">
+      <EntityTypeMapping TypeName="IsTypeOf(PokerDataBase.Plays)">
+        <MappingFragment StoreEntitySet="Plays">
+          <ScalarProperty Name="HandId" ColumnName="HandId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="HoleCard1" ColumnName="HoleCard1" />
+          <ScalarProperty Name="HoleCard2" ColumnName="HoleCard2" />
+          <ScalarProperty Name="StartingStack" ColumnName="StartingStack" />
+          <ScalarProperty Name="EndingStack" ColumnName="EndingStack" />
+          <ScalarProperty Name="SeatPosition" ColumnName="SeatPosition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Furthers1">
+      <EntityTypeMapping TypeName="IsTypeOf(PokerDataBase.Furthers)">
+        <MappingFragment StoreEntitySet="Furthers1">
+          <ScalarProperty Name="HandId" ColumnName="HandId" />
+          <ScalarProperty Name="ActionID" ColumnName="ActionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PlayedOns">
+      <EntityTypeMapping TypeName="IsTypeOf(PokerDataBase.PlayedOn)">
+        <MappingFragment StoreEntitySet="PlayedOns">
+          <ScalarProperty Name="HandId" ColumnName="HandId" />
+          <ScalarProperty Name="TableID" ColumnName="TableID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Performs">
+      <EntityTypeMapping TypeName="IsTypeOf(PokerDataBase.Performs)">
+        <MappingFragment StoreEntitySet="Performs">
+          <ScalarProperty Name="ActionID" ColumnName="ActionID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
