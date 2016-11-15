@@ -23,9 +23,9 @@ namespace ModelFirst
         public long ActionID { get; set; }
         public string ActionName { get; set; }
         public string Street { get; set; }
-        public long Amount { get; set; }
-        public byte[] IsPFR { get; set; }
-        public byte[] IsVPIP { get; set; }
+        public decimal Amount { get; set; }
+        public bool IsPFR { get; set; }
+        public bool IsVPIP { get; set; }
         public long HandHandId { get; set; }
     
         public virtual ICollection<Furthers> Furthers { get; set; }

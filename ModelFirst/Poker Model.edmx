@@ -74,7 +74,7 @@
       <PropertyRef Name="TableID" />
     </Key>
     <Property Name="TableID" Type="nvarchar" Nullable="false" MaxLength="100" />
-    <Property Name="MaxPlayers" Type="smallint" Nullable="false" />
+    <Property Name="MaxPlayers" Type="int" Nullable="false" />
     <Property Name="Stakes" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Limit" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Site" Type="nvarchar(max)" Nullable="false" />
@@ -86,9 +86,9 @@
     <Property Name="ActionID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ActionName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Street" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Amount" Type="bigint" Nullable="false" />
-    <Property Name="IsPFR" Type="varbinary(max)" Nullable="false" />
-    <Property Name="IsVPIP" Type="varbinary(max)" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Nullable="false" />
+    <Property Name="IsPFR" Type="bit" Nullable="false" />
+    <Property Name="IsVPIP" Type="bit" Nullable="false" />
     <Property Name="HandHandId" Type="bigint" Nullable="false" />
   </EntityType>
   <EntityType Name="Plays">
@@ -315,9 +315,9 @@
           <Property Name="ActionID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ActionName" Type="String" Nullable="false" />
           <Property Name="Street" Type="String" Nullable="false" />
-          <Property Name="Amount" Type="Int64" Nullable="false" />
-          <Property Name="IsPFR" Type="Binary" Nullable="false" />
-          <Property Name="IsVPIP" Type="Binary" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" />
+          <Property Name="IsPFR" Type="Boolean" Nullable="false" />
+          <Property Name="IsVPIP" Type="Boolean" Nullable="false" />
           <Property Name="HandHandId" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Furthers" Relationship="PokerDataBase.HandActionFurthers" FromRole="HandAction" ToRole="Furthers" />
           <NavigationProperty Name="Performs" Relationship="PokerDataBase.HandActionPerforms" FromRole="HandAction" ToRole="Performs" />

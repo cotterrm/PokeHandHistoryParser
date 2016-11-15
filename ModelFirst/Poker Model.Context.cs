@@ -13,10 +13,10 @@ namespace ModelFirst
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DbCreate : DbContext
+    public partial class Poker_x0020_ModelContainer : DbContext
     {
-		public DbCreate()
-			: base("name=DbCreate")
+        public Poker_x0020_ModelContainer()
+            : base("name=Poker_x0020_ModelContainer")
         {
         }
     

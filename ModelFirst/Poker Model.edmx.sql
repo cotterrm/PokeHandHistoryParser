@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/12/2016 10:36:48
+-- Date Created: 11/14/2016 19:52:45
 -- Generated from EDMX file: C:\EpicSource\WTC\ModelFirst\Poker Model.edmx
 -- --------------------------------------------------
 
@@ -112,9 +112,9 @@ CREATE TABLE [dbo].[HandActions] (
     [ActionID] bigint IDENTITY(1,1) NOT NULL,
     [ActionName] nvarchar(max)  NOT NULL,
     [Street] nvarchar(max)  NOT NULL,
-    [Amount] bigint  NOT NULL,
-    [IsPFR] varbinary(max)  NOT NULL,
-    [IsVPIP] varbinary(max)  NOT NULL,
+    [Amount] decimal(18,0)  NOT NULL,
+    [IsPFR] bit  NOT NULL,
+    [IsVPIP] bit  NOT NULL,
     [HandHandId] bigint  NOT NULL
 );
 GO
