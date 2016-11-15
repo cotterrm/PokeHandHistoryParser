@@ -100,7 +100,7 @@ namespace ConsoleApplication1
 						var tableToAdd = new ModelFirst.Table
 						{
 							TableID = handHistory.TableName,
-							MaxPlayers = handHistory.GameDescription.SeatType.MaxPlayers,
+							MaxPlayers = (Int32)(handHistory.GameDescription.SeatType.MaxPlayers),
 							Stakes = handHistory.GameDescription.Limit.BigBlind.ToString(), //what's the difference between stakes and limit?
 							Site = handHistory.GameDescription.Site.ToString(),
 							
@@ -121,7 +121,35 @@ namespace ConsoleApplication1
 
 						//creating HandAction
 
-						//Creating Furthers
+						foreach (var item in handHistory.HandActions)
+						{
+							var handActionToAdd = new ModelFirst.HandAction
+							{
+
+								ActionID = handHistory.HandId + item.ActionNumber,
+								HandHandId = handHistory.HandId,
+								Amount=item.Amount,
+								Street = item.Street.ToString(),
+								ActionName = item.HandActionType.ToString(),
+								IsPFR = item.IsPreFlopRaise,
+								IsVPIP = item.IsAggressiveAction,
+
+
+							};
+							//Creating Furthers
+							var furtherToAdd = new ModelFirst.Furthers
+							{
+								ActionID=handActionToAdd.ActionID,
+								HandId = handHistory.HandId,
+
+
+							};
+						db.HandActions.Add(handActionToAdd);
+						db.Furthers1.Add(furtherToAdd);
+						}
+
+						
+						
 
 						//creating Performs
 
